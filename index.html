@@ -1347,18 +1347,7 @@ const analytics = getAnalytics(app);
   // MENU COLOR
   // =========================
 
-  const clima = document.getElementById('menuClima');
-  const dede = document.getElementById('menuDede');
-
-  clima.addEventListener('click', ()=>{
-    clima.classList.add('blue-active');
-    dede.classList.remove('green-active');
-  });
-
-  dede.addEventListener('click', ()=>{
-    dede.classList.add('green-active');
-    clima.classList.remove('blue-active');
-  });
+  
 
   // =====================================================
 // WHATSAPP CLIMATIZAÇÃO
@@ -1392,13 +1381,10 @@ Olá, gostaria de um orçamento para climatização.
 Endereço:
 ${enderecoClima.value},
 Nº ${numeroClima.value}
-
 Necessidade:
 ${necessidade.value}
-
-Quantidade:
+Quantidade de aparelhos:
 ${quantidade.value}
-
 BTUs:
 ${BTUs.value}
 
@@ -1624,4 +1610,5 @@ const analytics = getAnalytics(app);
 </script>
 
 </body>
+</html>
 </html>
