@@ -246,7 +246,7 @@ gap:10px;
       font-weight:900;
       margin-bottom:20px;
       animation:fadeUp 1s ease;
-      margin-left:-50px;
+      margin-left:0;
     }
 
     
@@ -262,7 +262,7 @@ gap:10px;
       font-weight:800;
       transition:.4s;
       box-shadow:0 0 25px rgba(0,255,170,.3);
-      margin-left:-50px;
+      margin-left:0;
     }
 
     .btn:hover{
@@ -368,9 +368,19 @@ gap:10px;
     }
 
     .service-image img{
-      height:100%;
-      object-fit:cover;
+    width:100%;
+    height:auto;
+    object-fit:cover;
+}
+@media(max-width:768px){
+
+    .hero{
+        padding:120px 20px 80px;
+        height:auto;
+        min-height:100vh;
     }
+
+}
 
     /* =========================
        FORM
@@ -808,8 +818,20 @@ opacity:.15;
       }
 
       .hero h1{
-        font-size:38px;
-      }
+        font-size:34px;
+        margin-left:0;
+        text-align:center; }
+
+    .hero-content{
+        text-align:center;
+    }
+
+    .btn{
+        margin:25px auto 0;
+    }
+
+}
+      
 
       .hero h2{
         font-size:22px;
@@ -835,7 +857,7 @@ opacity:.15;
         gap:18px;
       }
 
-    }
+    
 /* =========================
 BOTÃO WHATSAPP FIXO
 ========================= */
