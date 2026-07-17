@@ -1318,9 +1318,34 @@ FOOTER
 <!-- =========================
 JS
 ========================= -->
+<script type="module">
 
-<script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 
+import { 
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfkp1rZ-GeVSIzvr51K7i7Uoz4f_iQBmo",
+  authDomain: "multitec-311d6.firebaseapp.com",
+  projectId: "multitec-311d6",
+  storageBucket: "multitec-311d6.firebasestorage.app",
+  messagingSenderId: "1044051788961",
+  appId: "1:1044051788961:web:669200926e42411a96dce0",
+  measurementId: "G-LGGD42C2L9"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
 
 document.getElementById('climaForm')
 .addEventListener('submit',function(e){
@@ -1476,112 +1501,69 @@ Endereço: ${enderecoDede.value}, Nº ${numeroDede.value}
 
   const commentsList = document.getElementById('commentsList');
 
-  function carregarComentarios(){
+  fu
 
-    commentsList.innerHTML = '';
+ async function carregarComentarios(){
 
-    const comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
+    commentsList.innerHTML = "";
 
-    comentarios.forEach(c => {
+    const q = query(
+        collection(db, "comentarios"),
+        orderBy("data", "desc")
+    );
 
-      commentsList.innerHTML += `
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach((doc)=>{
+
+        const c = doc.data();
+
+        const letra = c.nome.charAt(0).toUpperCase();
+
+        commentsList.innerHTML += `
+
         <div class="comment-card">
-          <h4>${c.nome}</h4>
-          <p>${'⭐'.repeat(c.nota)}</p>
-          <br>
-          <p>${c.texto}</p>
+
+            <div class="comment-header">
+
+                <div class="avatar">
+                    ${letra}
+                </div>
+
+                <div>
+
+                    <div class="comment-name">
+                        ${c.nome}
+                    </div>
+
+                    <div class="comment-date">
+                        Cliente verificado
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="comment-stars">
+                ${"★".repeat(c.nota)}
+                ${"☆".repeat(5-c.nota)}
+            </div>
+
+
+            <div class="comment-text">
+                ${c.texto}
+            </div>
+
         </div>
-      `;
+
+        `;
 
     });
 
-  }
-
-  function carregarComentarios(){
-
-commentsList.innerHTML="";
-
-const comentarios=JSON.parse(localStorage.getItem("comentarios"))||[];
-
-comentarios.reverse().forEach(c=>{
-
-const letra=c.nome.charAt(0).toUpperCase();
-
-commentsList.innerHTML+=`
-
-<div class="comment-card">
-
-<div class="google-icon">
-
-<i class="fa-brands fa-google"></i>
-
-</div>
-
-<div class="comment-header">
-
-<div class="avatar">
-
-${letra}
-
-</div>
-
-<div>
-
-<div class="comment-name">
-
-${c.nome}
-
-</div>
-
-<div class="comment-date">
-
-Cliente verificado
-
-</div>
-
-</div>
-
-</div>
-
-<div class="comment-stars">
-
-${"★".repeat(c.nota)}${"☆".repeat(5-c.nota)}
-
-</div>
-
-<div class="comment-text">
-
-${c.texto}
-
-</div>
-
-</div>
-
-`;
-
-});
-
 }
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDfkp1rZ-GeVSIzvr51K7i7Uoz4f_iQBmo",
-  authDomain: "multitec-311d6.firebaseapp.com",
-  projectId: "multitec-311d6",
-  storageBucket: "multitec-311d6.firebasestorage.app",
-  messagingSenderId: "1044051788961",
-  appId: "1:1044051788961:web:669200926e42411a96dce0",
-  measurementId: "G-LGGD42C2L9"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-  document.getElementById("enviarComentario").addEventListener("click", () => {
+  document.getElementById("enviarComentario").addEventListener("click", async () => {
 
     const nome = document.getElementById("nomeComentario").value.trim();
     const texto = document.getElementById("textoComentario").value.trim();
@@ -1591,16 +1573,12 @@ const analytics = getAnalytics(app);
         return;
     }
 
-    const comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
-
-    comentarios.push({
-        nome,
-        texto,
-        nota
-    });
-
-    localStorage.setItem("comentarios", JSON.stringify(comentarios));
-
+  await addDoc(collection(db, "comentarios"), {
+    nome: nome,
+    texto: texto,
+    nota: nota,
+    data: serverTimestamp()
+});
     document.getElementById("nomeComentario").value = "";
     document.getElementById("textoComentario").value = "";
 
