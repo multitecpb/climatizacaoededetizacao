@@ -1605,7 +1605,38 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 */
-  
+  document.getElementById("enviarComentario").addEventListener("click", () => {
+
+    const nome = document.getElementById("nomeComentario").value.trim();
+    const texto = document.getElementById("textoComentario").value.trim();
+
+    if (!nome || !texto || nota === 0) {
+        alert("Preencha seu nome, comentário e selecione uma quantidade de estrelas.");
+        return;
+    }
+
+    const comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
+
+    comentarios.push({
+        nome,
+        texto,
+        nota
+    });
+
+    localStorage.setItem("comentarios", JSON.stringify(comentarios));
+
+    document.getElementById("nomeComentario").value = "";
+    document.getElementById("textoComentario").value = "";
+
+    nota = 0;
+    stars.forEach(s => s.classList.remove("active"));
+
+    carregarComentarios();
+
+    alert("Comentário publicado com sucesso!");
+});
+
+carregarComentarios();
 </script>
 
 </body>
